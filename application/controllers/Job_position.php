@@ -2,21 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Job_position extends CI_Controller {
-    public function __construct() 
-    {
-        parent::__construct();
-        $this->load->model("job_position_model");
-    }
 
     public function index() {
         $this->view();
     }
 
     public function view() {
+        $meta['title'] ="List of Job Positions";
         $data["positions"] = $this->job_position_model->get_all_position();
-        $this->load->view("template/header");
-        $this->load->view("job_position_view/view",$data);
-        $this->load->view("template/footer");
+        $this->load->view("admin/template/header",$meta);
+        $this->load->view("admin/job_position/view",$data);
+        $this->load->view("admin/template/footer");
     }
 
     public function create_position() {
@@ -29,19 +25,32 @@ class Job_position extends CI_Controller {
                 "job_description"   => $this->input->post("job_description")
             );
 
-            $this->job_position_model->set_position($data);
-            redirect(base_url()."job_position/success");
+            if ($this->input->post('update_position')) {
+                $id = $this->input->post('position_id');
+                $this->job_position_model->update_position($data, $id);
+				$this->session->set_flashdata('class', 'success');
+				$this->session->set_flashdata('message', 'Position has been updated successfully!');
+                redirect(base_url()."job_position");
+            }else {
+                $this->job_position_model->set_position($data);
+				$this->session->set_flashdata('class', 'success');
+				$this->session->set_flashdata('message', 'New position has been inserted successfully!');
+                redirect(base_url()."job_position");
+            }
+
+            
         }
     }
 
     public function edit_position() {
         $id = $this->uri->segment(3);
 
-        $data["positions"] = $this->job_position_model->get_specific_position($id);
+        $meta['title'] ="List of Job Positions";
+        $data["position"] = $this->job_position_model->get_specific_position($id);
 
-        $this->load->view("template/header");
-        $this->laod->view("job_position_view/update_position", $data);
-        $this->load->view("template/footer");
+        $this->load->view("admin/template/header", $meta);
+        $this->load->view("admin/job_position/update_position",$data);
+        $this->load->view("admin/template/footer");
     }
 
     public function success() {

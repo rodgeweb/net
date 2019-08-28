@@ -16,12 +16,17 @@ class Employer_model extends CI_Model {
     function get_specific_employer($id) {
         $this->db->where("id", $id);
         $query = $this->db->get("tbl_employer");
-        return $query;
+        return $query->row();
     }
 
     function update_employer($data, $id) {
         $this->db->where("id", $id);
         $this->db->update("tbl_employer", $data);
 
+    }
+
+    function update_employer_status($data, $id) {
+        $this->db->where('id', $id);
+        $this->db->update('tbl_employer', $data);
     }
 }

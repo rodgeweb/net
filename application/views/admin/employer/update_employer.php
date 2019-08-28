@@ -2,10 +2,7 @@
     <h2>List of Employer</h2>
 </div>
 <div class="container">
-    <form action="<?php echo base_url(); ?>employer/add_employer" method="POST">
-        <?php 
-        foreach($specific_employer->result() as $employer) :
-        ?>
+        <?= form_open_multipart('employer/add_employer') ?>
             <input type="hidden" name="employer_id"  value="<?php echo $employer->id; ?>" />
             <div class="form-group">
                 <input class="form-control form-control-lg" type="text" name="employer_name" value="<?php echo $employer->employer_name ?>" />
@@ -22,7 +19,7 @@
             <div class="form-group">
                 <input class="btn btn-primary" type="submit" name="update_employer" value="Update Employer" />
             </div>
-        <?php endforeach; ?>
+        <?= form_close(); ?>
     </form>    
 </div>
 </div>

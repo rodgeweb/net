@@ -1,7 +1,10 @@
 <div class="container-fluid">
+    <div class="text-center my-5">
+        <h1><?= $title; ?></h1>
+    </div>
     <div class="row">
         <div class="col-md-3">
-            <form action="<?php base_url(); ?>create_position" method="POST" >
+            <?= form_open('job_position/create_position'); ?>
                 <div class="form-group">
                     <input class="form-control form-control-lg" type="text" name="job_name" placeholder="Job Name" />
                 </div>
@@ -11,7 +14,7 @@
                 <div class="form-group">
                     <input class="btn btn-primary" type="submit" name="add_position" value="Add Position" />
                 </div>
-            </form>
+            <?= form_close(); ?>
         </div>
         <div class="col-md-9">
 
@@ -28,7 +31,7 @@
                 <tbody>
                     <td><?php echo $position->job_name; ?></td>
                     <td><?php echo $position->job_description ?></td>
-                    <td><a class="btn btn-warning" href="<?php base_url(); ?>edit_position/<?php echo $position->id; ?>">Update</a></td>
+                    <td><a class="btn btn-warning" href="<?php site_url(); ?>job_position/edit_position/<?php echo $position->id; ?>">Update</a></td>
                 </tbody>
             </tr>
             <?php endforeach; ?>

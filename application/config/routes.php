@@ -49,6 +49,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+
+// Job Posting
+$route['job'] = 'job/index';
+$route['job/add-job'] = 'job/add_job';
+$route['job/update-job/(:any)'] = 'job/update_job/$';
+$route['job/delete/(:any)'] = 'job/update_job_status/$';
+
+// Employer
+$route['employer'] = 'employer/view';
+$route['employer/add-employer'] = 'employer/add_employer';
+
+// For CMS Routes. Any url that it recieves will redirect to pages controller adn its method.
+// $route['(:any)'] =  'pages/view/$1';
+
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

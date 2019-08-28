@@ -2,26 +2,24 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Job extends CI_Controller {
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->load->model('job_model');
-	}
-
+	
+	/**
+	 * 
+	 * Admin Controller
+	 * 
+	 */
 	public function index()
 	{
-		$data['get_jobs'] = $this->job_model->get_job();
-		$this->load->view('template/header');
-		$this->load->view('pages/job_list', $data);
-		$this->load->view('template/footer');
-	}
 
-	public function select_all_jobs() {
-		$this->index();
+		$meta['title'] = 'Job Listings';
+		$data['get_jobs'] = $this->job_model->get_job();
+		$this->load->view('admin/template/header',$meta);
+		$this->load->view('admin/job/job_list', $data);
+		$this->load->view('admin/template/footer');
 	}
 
 	public function add_job() {
+		$meta['title'] = 'Add New Job';
 
 		$this->form_validation->set_rules("job_name", "Job Name", 'required');
 		$this->form_validation->set_rules("job_description", "Job Description", 'required');
@@ -29,7 +27,7 @@ class Job extends CI_Controller {
 		$this->form_validation->set_rules("job_salary", "Job Salary", 'required');
 		$this->form_validation->set_rules("job_tenure_id", "Job Tenure ID", 'required');
 		$this->form_validation->set_rules("employer_id", "Employer ID", 'required');
-		$this->form_validation->set_rules("status", "Status", 'required');
+		// $this->form_validation->set_rules("status", "Status", 'required');
 
 		if ($this->form_validation->run()) {
 			$data = array(
@@ -39,7 +37,7 @@ class Job extends CI_Controller {
 				"job_salary" 		=> $this->input->post("job_salary"),
 				"job_tenure_id" 	=> $this->input->post("job_tenure_id"),
 				"employer_id" 		=> $this->input->post("employer_id"),
-				"status" 			=> $this->input->post("status")
+				"status" 			=> 1
 
 			);
 
@@ -48,26 +46,31 @@ class Job extends CI_Controller {
 				$id = $this->input->post("specific_job_id");
 				
 				$this->job_model->update_job($data, $id);
-				redirect(base_url()."job/update_success");
+				$this->session->set_flashdata('class', 'success');
+				$this->session->set_flashdata('message', 'Job has been updated successfully!');
+				redirect(base_url()."job");
 			}else {
 				$this->job_model->set_job($data);
-				redirect (base_url()."job/insert_success");
+				$this->session->set_flashdata('class', 'success');
+				$this->session->set_flashdata('message', 'New Job has been inserted successfully!');
+				redirect (base_url()."job");
 			}			
 		}
 
-		$this->load->view('template/header');
-		$this->load->view('pages/add_job');
-		$this->load->view('template/footer');
+		$this->load->view('admin/template/header',$meta);
+		$this->load->view('admin/job/add_job');
+		$this->load->view('admin/template/footer');
 	}
 
 	public function update_job() {
 		$job_id = $this->uri->segment(3);
 
-		$data["job_data"] = $this->job_model->fetch_single_job($job_id);
+		$meta['title'] = 'Job Listings';
+		$data["job"] = $this->job_model->fetch_single_job($job_id);
 
-		$this->load->view('template/header');
-		$this->load->view("pages/update_job", $data);
-		$this->load->view('template/footer');
+		$this->load->view('admin/template/header', $meta);
+		$this->load->view("admin/job/update_job", $data);
+		$this->load->view('admin/template/footer');
 	}
 
 	public function update_job_status() {
@@ -75,16 +78,21 @@ class Job extends CI_Controller {
 		$id = $this->uri->segment(3);
 
 		$this->job_model->update_job_status($data, $id);
+		$this->session->set_flashdata('class', 'warning');
+		$this->session->set_flashdata('message', 'Job has been succesfully disabled.');
 		redirect(base_url()."job/index");
 	}
 	
-	public function insert_success()
-	{
-		$this->index();
-	}
-	
-	public function update_success()
-	{
-		$this->index();
-	}
+	/**
+	 * 
+	 * Front End Controller
+	 * 
+	 */
+
+// 	public function select_all_jobs() {
+// 		$data['get_jobs'] = $this->job_model->get_job();
+// 		$this->load->view('admin/template/header');
+// 		$this->load->view('admin/job/job_list', $data);
+// 		$this->load->view('admin/template/footer');
+// 	}
 }

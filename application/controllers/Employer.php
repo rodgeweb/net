@@ -3,21 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Employer extends CI_Controller {
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model("employer_model");
-    }
-
-    public function index() {
-        $this->view();
-    }
-
     public function view() {
+        $meta['title'] = 'List of Employer';
         $data["employers"] = $this->employer_model->get_all_employer();
-        $this->load->view("template/header");
-        $this->load->view("employer/view", $data);
-        $this->load->view("template/footer");
+        $this->load->view("admin/template/header", $meta);
+        $this->load->view("admin/employer/view", $data);
+        $this->load->view("admin/template/footer");
     }
 
     public function add_employer() {
@@ -38,10 +29,16 @@ class Employer extends CI_Controller {
             if($this->input->post("update_employer")){
                 $id = $this->input->post("employer_id");
                 $this->employer_model->update_employer($data, $id);
-                redirect(base_url() . "employer/success");
+
+				$this->session->set_flashdata('class', 'success');
+				$this->session->set_flashdata('message', 'Employer records has been updated!');
+                redirect(base_url() . "employer");
             }else {
                 $this->employer_model->set_employer($data);
-                redirect(base_url() . "employer/success");
+
+				$this->session->set_flashdata('class', 'success');
+				$this->session->set_flashdata('message', 'New employer record has been added!');
+                redirect(base_url() . "employer");
             }            
         }
     }
@@ -50,19 +47,24 @@ class Employer extends CI_Controller {
 
         $id = $this->uri->segment(3);
 
-        $data["specific_employer"] = $this->employer_model->get_specific_employer($id);
+        $meta['title'] = 'Update Employer';
+        $data["employer"] = $this->employer_model->get_specific_employer($id);
 
-        $this->load->view("template/header");
-        $this->load->view("employer/update_employer", $data);
-        $this->load->view("template/footer");
+        $this->load->view("admin/template/header", $meta);
+        $this->load->view("admin/employer/update_employer", $data);
+        $this->load->view("admin/template/footer");
     }
 
     public function update_employer_status() {
+        $id = $this->uri->segment(3);
+        $data = array(
+            "emp_status" => 0
+        );
 
-    }
-
-    public function success() {
-        $this->view();
+        $this->employer_model->update_employer_status($data, $id);
+        $this->session->set_flashdata('class', 'warning');
+        $this->session->set_flashdata('message', 'Employer was succesfully disabled.');
+        redirect('employer');
     }
 
 }

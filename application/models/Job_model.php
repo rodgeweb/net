@@ -17,7 +17,7 @@ class Job_model extends CI_Model {
 	function fetch_single_job($id) {
 		$this->db->where("id", $id);
 		$query = $this->db->get("tbl_job_post");
-		return $query;
+		return $query->row();
 	}
 
 	function update_job($data, $id) {

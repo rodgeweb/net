@@ -1,4 +1,4 @@
-<div class="container-fluid text-center">
+    <div class="container-fluid text-center">
     <h2>List of Employer</h2>
 </div>
 <div class="container-fluid">
@@ -42,8 +42,8 @@
                     <td><?php echo $employer->emp_status; ?></td>
                     <td><?php echo $employer->agent_id; ?></td>
                     <td>
-                        <a class="btn btn-warning" href="<?php site_url() ?>employer/update_employer/<?php echo $employer->id; ?>">Update</a>
-                        <a class="btn btn-danger" href="<?php base_url() ?>employer/update_employer_status/<?php echo $employer->id; ?>">Delete</a>
+                        <a class="btn btn-warning" href="employer/update_employer/<?php echo $employer->id; ?>">Update</a>
+                        <a class="btn btn-danger" href="employer/update_employer_status/<?php echo $employer->id; ?>">Disable</a>
                     </td>
                 </tbody>
             </tr>

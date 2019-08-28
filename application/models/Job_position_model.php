@@ -14,7 +14,7 @@ class Job_position_model extends CI_Model {
     function get_specific_position($id) {
         $this->db->where("id", $id);
         $query = $this->db->get("job_position");
-        return $query;
+        return $query->row();
     }
 
     function update_position($data, $id) {

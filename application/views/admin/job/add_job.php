@@ -1,8 +1,11 @@
-<div class="container-fluid">
-
+<div class="container-fluid text-center my-5">
+    <h2><?= $title; ?></h2>
 </div>
 <div class="container">
-    <form action="<?php echo base_url(); ?>job/add_job" method="POST">
+<?php if(validation_errors() != FALSE) : ?>
+<div class="alert alert-danger" role="alert"><?= validation_errors(); ?></div>
+<?php endif; ?>
+    <?= form_open_multipart('job/add_job'); ?>
         <div class="form-group">
             <label for="job_name">Job Name</label>
             <input class="form-control form-control-lg" type="text" name="job_name" title="Job Name" placeholder="Job Name" />
@@ -34,13 +37,8 @@
             <?php echo "<p>".form_error("employer_id")."</p>"; ?>
         </div>
         <div class="form-group">
-            <label for="status">Status</label>
-            <input class="form-control form-control-lg" type="number" name="status"/>
-            <?php echo "<p>".form_error("status")."</p>"; ?>
-        </div>
-        <div class="form-group">
             <input class="btn btn-primary" type="submit" name="add_job" value="Add Job" />
         </div>
         
-    </form>
+    <?= form_close(); ?>
 </div>
