@@ -5,28 +5,52 @@ class Job_model extends CI_Model {
 
 	function get_job()
 	{
-		$this->db->where("status", 1);
-        $query = $this->db->get("tbl_job_post");
+		// $this->db->where("tbl_jobs.status", 1);
+		$this->db->select('
+		a.id, a.job_name, 
+		a.job_description, 
+		a.job_category_id, 
+		a.job_experience_id, 
+		a.work_location, 
+		a.employment_type_id, 
+		a.employer_id, 
+		a.job_status_id, 
+		a.job_salary_id, 
+		b.company_name, 
+		c.category_name, 
+		d.job_salary
+		');
+		$this->db->from("tbl_jobs a");
+		$this->db->join('tbl_company b', 'b.id = a.employer_id');
+		$this->db->join('tbl_job_categories c', 'c.id = a.job_category_id');
+		$this->db->join('tbl_job_salary d', 'd.id = a.job_salary_id');
+        $query = $this->db->get();
         return $query;
 	}
 
 	function set_job($data) {
-		$this->db->insert("tbl_job_post", $data);
+		$this->db->insert("tbl_jobs", $data);
 	}
 
 	function fetch_single_job($id) {
-		$this->db->where("id", $id);
-		$query = $this->db->get("tbl_job_post");
+		
+		$this->db->where("tbl_jobs.id", $id);
+		$this->db->join('tbl_job_categories', 'tbl_job_categories.id = tbl_jobs.job_category_id', 'left');
+		$this->db->join('tbl_job_experience', 'tbl_job_experience.id = tbl_jobs.job_experience_id', 'left');
+		$this->db->join('tbl_job_salary', 'tbl_job_salary.id = tbl_jobs.job_salary_id', 'left');
+		$this->db->join('tbl_employment_type', 'tbl_employment_type.id = tbl_jobs.employment_type_id', 'left');
+		$this->db->join('tbl_company', 'tbl_company.id = tbl_jobs.employer_id', 'left');
+		$query = $this->db->get("tbl_jobs");
 		return $query->row();
 	}
 
 	function update_job($data, $id) {
 		$this->db->where("id", $id);
-		$this->db->update("tbl_job_post", $data);
+		$this->db->update("tbl_jobs", $data);
 	}
 
 	function update_job_status($data, $id) {
 		$this->db->where("id", $id);
-		$this->db->update("tbl_job_post", $data);
+		$this->db->update("tbl_jobs", $data);
 	}
 }

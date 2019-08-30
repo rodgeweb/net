@@ -55,10 +55,14 @@ $route['job'] = 'job/index';
 $route['job/add-job'] = 'job/add_job';
 $route['job/update-job/(:any)'] = 'job/update_job/$';
 $route['job/delete/(:any)'] = 'job/update_job_status/$';
+$route['job/view-job/(:any)'] = 'job/view_job/$';
 
 // Employer
 $route['employer'] = 'employer/view';
 $route['employer/add-employer'] = 'employer/add_employer';
+
+// User
+// $route['users/update-profile'] = 'users/update_profile';
 
 // For CMS Routes. Any url that it recieves will redirect to pages controller adn its method.
 // $route['(:any)'] =  'pages/view/$1';

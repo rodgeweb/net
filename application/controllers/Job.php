@@ -10,9 +10,16 @@ class Job extends CI_Controller {
 	 */
 	public function index()
 	{
+		if(!$this->session->userdata('logged_in')){
 
+			$this->session->set_flashdata('class', 'danger');
+			$this->session->set_flashdata('message', 'You have no permission to this page!');
+
+			redirect('users/login');
+		}
 		$meta['title'] = 'Job Listings';
 		$data['get_jobs'] = $this->job_model->get_job();
+
 		$this->load->view('admin/template/header',$meta);
 		$this->load->view('admin/job/job_list', $data);
 		$this->load->view('admin/template/footer');
@@ -27,7 +34,6 @@ class Job extends CI_Controller {
 		$this->form_validation->set_rules("job_salary", "Job Salary", 'required');
 		$this->form_validation->set_rules("job_tenure_id", "Job Tenure ID", 'required');
 		$this->form_validation->set_rules("employer_id", "Employer ID", 'required');
-		// $this->form_validation->set_rules("status", "Status", 'required');
 
 		if ($this->form_validation->run()) {
 			$data = array(
@@ -81,6 +87,24 @@ class Job extends CI_Controller {
 		$this->session->set_flashdata('class', 'warning');
 		$this->session->set_flashdata('message', 'Job has been succesfully disabled.');
 		redirect(base_url()."job/index");
+	}
+
+	public function view_job() {
+
+		$job_id = $this->uri->segment(3);
+
+		if($job_id === NULL) {
+			redirect('job');
+		}
+
+		$data['job'] = $this->job_model->fetch_single_job($job_id);
+
+		$meta['title'] = $data['job']->job_name;
+
+		$this->load->view('admin/template/header', $meta);
+		$this->load->view("admin/job/view_job", $data);
+		$this->load->view('admin/template/footer');
+
 	}
 	
 	/**

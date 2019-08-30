@@ -17,6 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="main-nav">
+			<?php if($this->session->userdata('logged_in')) : ?>
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
 					<a class="nav-link" href="<?= site_url('job');?>">Dashboard</a>
@@ -39,6 +40,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<li class="nav-item">
 					<a class="nav-link" href="<?= site_url('job_position/view');?>">Job Position</a>
 				</li>
+			</ul>
+			<?php endif; ?>
+			<ul class="navbar-nav ml-auto">
+				<?php if(!$this->session->userdata('logged_in')) : ?>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= site_url('users/register');?>">Register</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= site_url('users/login');?>">login</a>
+				</li>
+				<?php else: ?>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= site_url('users/profile');?>"><strong>Welcome: <?= $this->session->userdata('first_name'); ?></strong></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<?= site_url('users/logout');?>">Log out</a>
+				</li>
+				<?php endif; ?>
 			</ul>
 		</div>
 	</nav>
