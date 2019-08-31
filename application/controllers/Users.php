@@ -3,16 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
 
-    public function index() {
-
-        // $meta['title'] = 'Login';
-
-        // $this->load->view('admin/template/header');
-        // $this->load->view('frontend/user/');
-        // $this->load->view('frontend/template/footer');
-        
-    }
-
     public function login() {
         $meta['title'] = 'Login';
 
@@ -33,6 +23,7 @@ class Users extends CI_Controller {
                 $user_data = array(
                     'user_id' => $user_id->id,
                     'first_name' => $user_id->first_name,
+                    'email' => $user_id->email,
                     'username' => $username,
                     'logged_in' => true
                 );
@@ -54,13 +45,29 @@ class Users extends CI_Controller {
     public function register() {
         $meta['title'] = 'Sign Up';
 
-        $this->form_validation->set_rules('username', 'Username', 'required|callback_check_username_exist');
+        // Get session username and email to match for updating user records
+        $username = $this->session->userdata('username');
+        $email = $this->session->userdata('email');
+
+        // Input form to be check before validation
+        $post_username = $this->input->post('username');
+        $post_email = $this->input->post('email');
+
+        if($username != $post_username){
+            $this->form_validation->set_rules('username', 'Username', 'required|callback_check_username_exist');
+        }
+
+        if($email != $post_email) {
+            $this->form_validation->set_rules('email', 'Email', 'required|callback_check_email_exist');
+        }
+
+        
         $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('confirm-password', 'Confirm Password', 'matches[password]');
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
         $this->form_validation->set_rules('middle_name', 'Middle Name', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required|callback_check_email_exist');
+        
 
         if($this->form_validation->run()) {
             $passwrod_encrypt = md5($this->input->post('password'));
@@ -92,8 +99,14 @@ class Users extends CI_Controller {
             }
         }       
 
+        
         $this->load->view('admin/template/header', $meta);
-        $this->load->view('frontend/user/register');
+        if ($this->session->userdata('logged_in')){
+            $this->load->view('admin/user/update_profile');
+        }else {
+            $this->load->view('frontend/user/register');
+        }
+        
         // $this->load->view('frontend/template/footer');
     }
 
@@ -110,17 +123,17 @@ class Users extends CI_Controller {
 
     }
 
-    // public function update_profile() {
-    //     $meta['title'] = 'Update user';
+    public function update_profile() {
+        $meta['title'] = 'Update user';
 
-    //     $user_id =  $this->session->userdata('user_id');
+        $user_id =  $this->session->userdata('user_id');
 
-    //     $data['user'] = $this->user_model->get_specific_user($user_id);
+        $data['user'] = $this->user_model->get_specific_user($user_id);
 
-    //     $this->load->view('admin/template/header', $meta);
-    //     $this->load->view('admin/user/update_profile', $data);
-    //     $this->load->view('admin/template/footer');
-    // }
+        $this->load->view('admin/template/header', $meta);
+        $this->load->view('admin/user/update_profile', $data);
+        $this->load->view('admin/template/footer');
+    }
 
     public function logout() {
         $this->session->unset_userdata('user_id');

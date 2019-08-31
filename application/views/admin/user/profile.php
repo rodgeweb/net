@@ -10,6 +10,9 @@
         </div>
         <div class="col-md-9">
             <p>Job Role/ Position</p>
+            <div class="py-5">
+                <?= anchor('users/update-profile', 'Update Profile', 'class="btn btn-primary"'); ?>
+            </div>
         </div>
     </div>
 </div>

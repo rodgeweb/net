@@ -62,7 +62,7 @@ $route['employer'] = 'employer/view';
 $route['employer/add-employer'] = 'employer/add_employer';
 
 // User
-// $route['users/update-profile'] = 'users/update_profile';
+$route['users/update-profile'] = 'users/update_profile';
 
 // For CMS Routes. Any url that it recieves will redirect to pages controller adn its method.
 // $route['(:any)'] =  'pages/view/$1';

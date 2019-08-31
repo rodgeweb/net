@@ -26,24 +26,36 @@ class Job extends CI_Controller {
 	}
 
 	public function add_job() {
+		if(!$this->session->userdata('logged_in')){
+
+			$this->session->set_flashdata('class', 'danger');
+			$this->session->set_flashdata('message', 'You have no permission to this page!');
+
+			redirect('users/login');
+		}
 		$meta['title'] = 'Add New Job';
 
 		$this->form_validation->set_rules("job_name", "Job Name", 'required');
 		$this->form_validation->set_rules("job_description", "Job Description", 'required');
-		$this->form_validation->set_rules("job_position_id", "Job Position ID", 'required');
+		$this->form_validation->set_rules("job_category_id", "Job Category", 'required');
+		$this->form_validation->set_rules("job_experience_id", "Job Experience", 'required');
+		$this->form_validation->set_rules("work_location", "Work Location", 'required');
+		$this->form_validation->set_rules("employment_type_id", "Employment Type", 'required');
+		$this->form_validation->set_rules("employer_id", "Employer / Company", 'required');
+		$this->form_validation->set_rules("job_status_id", "Job Status", 'required');
 		$this->form_validation->set_rules("job_salary", "Job Salary", 'required');
-		$this->form_validation->set_rules("job_tenure_id", "Job Tenure ID", 'required');
-		$this->form_validation->set_rules("employer_id", "Employer ID", 'required');
 
 		if ($this->form_validation->run()) {
 			$data = array(
-				"job_name" 			=> $this->input->post("job_name"),
-				"job_description" 	=> $this->input->post("job_description"),
-				"job_position_id" 	=> $this->input->post("job_position_id"),
-				"job_salary" 		=> $this->input->post("job_salary"),
-				"job_tenure_id" 	=> $this->input->post("job_tenure_id"),
-				"employer_id" 		=> $this->input->post("employer_id"),
-				"status" 			=> 1
+				"job_name" 				=> $this->input->post("job_name"),
+				"job_description" 		=> $this->input->post("job_description"),
+				"job_category_id" 		=> $this->input->post("job_category_id"),
+				"job_experience_id" 	=> $this->input->post("job_experience_id"),
+				"work_location" 		=> $this->input->post("work_location"),
+				"employment_type_id" 		=> $this->input->post("employment_type_id"),
+				"employer_id" 			=> $this->input->post("employer_id"),
+				"job_status_id" 		=> $this->input->post("job_status_id"),
+				"job_salary_id" 		=> $this->input->post("job_salary")
 
 			);
 
@@ -62,17 +74,40 @@ class Job extends CI_Controller {
 				redirect (base_url()."job");
 			}			
 		}
+		
+		// Get Job Category, Company name, Employment Type
+		$data['job_category'] = $this->job_model->get_job_category();
+		$data['job_experience'] = $this->job_model->get_job_experience();
+		$data['employment_type'] = $this->job_model->get_employment_type();
+		$data['company_name'] = $this->job_model->get_company_name();
+		$data['job_status'] = $this->job_model->get_job_status();
+		$data['job_salary'] = $this->job_model->get_job_salary();
 
 		$this->load->view('admin/template/header',$meta);
-		$this->load->view('admin/job/add_job');
+		$this->load->view('admin/job/add_job', $data);
 		$this->load->view('admin/template/footer');
 	}
 
 	public function update_job() {
+		if(!$this->session->userdata('logged_in')){
+
+			$this->session->set_flashdata('class', 'danger');
+			$this->session->set_flashdata('message', 'You have no permission to this page!');
+
+			redirect('users/login');
+		}
 		$job_id = $this->uri->segment(3);
 
 		$meta['title'] = 'Job Listings';
 		$data["job"] = $this->job_model->fetch_single_job($job_id);
+		
+		// Get Job Category, Company name, Employment Type
+		$data['job_category'] = $this->job_model->get_job_category();
+		$data['job_experience'] = $this->job_model->get_job_experience();
+		$data['employment_type'] = $this->job_model->get_employment_type();
+		$data['company_name'] = $this->job_model->get_company_name();
+		$data['job_status'] = $this->job_model->get_job_status();
+		$data['job_salary'] = $this->job_model->get_job_salary();
 
 		$this->load->view('admin/template/header', $meta);
 		$this->load->view("admin/job/update_job", $data);
@@ -90,6 +125,13 @@ class Job extends CI_Controller {
 	}
 
 	public function view_job() {
+		if(!$this->session->userdata('logged_in')){
+
+			$this->session->set_flashdata('class', 'danger');
+			$this->session->set_flashdata('message', 'You have no permission to this page!');
+
+			redirect('users/login');
+		}
 
 		$job_id = $this->uri->segment(3);
 
