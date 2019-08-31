@@ -1,23 +1,33 @@
-<div class="container-fluid text-center">
-    <h2>List of Employer</h2>
+<div class="container-fluid text-center py-5">
+    <h2>Update: <?php echo $company->company_name ?></h2>
 </div>
 <div class="container">
+        <?php if(validation_errors()) : ?>
+        <div class="alert alert-danger">
+        <?= validation_errors(); ?>
+        </div>
+        <?php endif; ?>
         <?= form_open_multipart('employer/add_employer') ?>
-            <input type="hidden" name="employer_id"  value="<?php echo $employer->id; ?>" />
+            <input type="hidden" name="company_id"  value="<?php echo $company->id; ?>" />
             <div class="form-group">
-                <input class="form-control form-control-lg" type="text" name="employer_name" value="<?php echo $employer->employer_name ?>" />
+                <label>Company Name</label>
+                <input class="form-control form-control-lg" type="text" name="company_name" value="<?php echo $company->company_name ?>" />
             </div>
             <div class="form-group">
-                <input class="form-control form-control-lg" type="text" name="employer_description" value="<?php echo $employer->employer_description ?>" />
+                <label>Company Overview</label>
+                <input class="form-control form-control-lg" type="text" name="company_overview" value="<?php echo $company->company_overview ?>" />
             </div>
             <div class="form-group">
-                <input class="form-control form-control-lg" type="number" name="employer_status" value="<?php echo $employer->emp_status ?>" />
+                <label>Set Company Satus</label>
+                <select name="company_status" class="form-control form-control-lg">
+                    <option value="<?= $company->company_status ?>"><?= $company->status_name ?></option>
+                    <?php foreach($status->result() as $status) : ?>
+                    <option value="<?= $status->id ?>"><?= $status->status_name ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="form-group">
-                <input class="form-control form-control-lg" type="number" name="agent_id" value="<?php echo $employer->agent_id ?>" />
-            </div>
-            <div class="form-group">
-                <input class="btn btn-primary" type="submit" name="update_employer" value="Update Employer" />
+                <input class="btn btn-primary" type="submit" name="update_company" value="Update company" />
             </div>
         <?= form_close(); ?>
     </form>    

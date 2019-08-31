@@ -7,7 +7,8 @@ class Job_model extends CI_Model {
 	{
 		// $this->db->where("tbl_jobs.status", 1);
 		$this->db->select('
-		a.id, a.job_name, 
+		a.id, 
+		a.job_name, 
 		a.job_description, 
 		a.job_category_id, 
 		a.job_experience_id, 

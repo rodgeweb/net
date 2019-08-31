@@ -1,22 +1,30 @@
-    <div class="container-fluid text-center">
-    <h2>List of Employer</h2>
+<div class="container-fluid text-center py-5">
+    <h2>List of Companies</h2>
 </div>
 <div class="container-fluid">
 <div class="row">
     <div class="col-md-3">
+        <?php if(validation_errors()) : ?>
+         <?= validation_errors(); ?>
+        <?php endif; ?>
         <form action="<?php echo base_url() ?>employer/add_employer" method="POST">
-            <input type="hidden" name="employer_id" />
             <div class="form-group">
-                <input class="form-control form-control-lg" type="text" name="employer_name" placeholder="Employer Name" />
+                <label>Company Name</label>
+                <input class="form-control form-control-lg" type="text" name="company_name" placeholder="Company Name" />
             </div>
             <div class="form-group">
-                <input class="form-control form-control-lg" type="text" name="employer_description" placeholder="Employer Description" />
+                <label>Company Overview</label>
+                <input class="form-control form-control-lg" type="text" name="company_overview" placeholder="Company Overview" />
             </div>
             <div class="form-group">
-                <input class="form-control form-control-lg" type="number" name="employer_status" placeholder="Employer Status" />
-            </div>
-            <div class="form-group">
-                <input class="form-control form-control-lg" type="number" name="agent_id" placeholder="Agent ID" />
+                <label>Set Company Satus</label>
+                <select name="company_status" class="form-control form-control-lg">
+                    <option value="">---</option>
+                    <?php foreach($status->result() as $status) : ?>
+                    <option value="<?= $status->id ?>"><?= $status->status_name ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <!-- <input class="form-control form-control-lg" type="number" name="employer_status" placeholder="Employer Status" /> -->
             </div>
             <div class="form-group">
                 <input class="btn btn-primary" type="submit" name="add_employer" value="Add Employer" />
@@ -27,23 +35,21 @@
         <table class="table table-border">
             <tr>
                 <thead>
-                    <th>Employer Name</th>
-                    <th>Employer Description</th>
-                    <th>Employer Status</th>
-                    <th>Agent ID</th>
+                    <th>Company Name</th>
+                    <th>Company Overview</th>
+                    <th>Company Status</th>
                     <th>Action</th>
                 </thead>
             </tr>
-            <?php foreach ($employers->result() as $employer) : ?>
+            <?php foreach ($companies->result() as $company) : ?>
             <tr>
                 <tbody>
-                    <td><?php echo $employer->employer_name; ?></td>
-                    <td><?php echo $employer->employer_description; ?></td>
-                    <td><?php echo $employer->emp_status; ?></td>
-                    <td><?php echo $employer->agent_id; ?></td>
+                    <td><?php echo $company->company_name; ?></td>
+                    <td><?php echo $company->company_overview; ?></td>
+                    <td><?php echo $company->status_name; ?></td>
                     <td>
-                        <a class="btn btn-warning" href="employer/update_employer/<?php echo $employer->id; ?>">Update</a>
-                        <a class="btn btn-danger" href="employer/update_employer_status/<?php echo $employer->id; ?>">Disable</a>
+                        <?= anchor('employer/update_employer/'.$company->id, 'Update', 'class="btn btn-warning"'); ?>
+                        <?= anchor('employer/update_employer_status/'.$company->id, 'Disable', 'class="btn btn-danger"'); ?>
                     </td>
                 </tbody>
             </tr>

@@ -5,41 +5,45 @@ class Employer extends CI_Controller {
 
     public function view() {
         $meta['title'] = 'List of Employer';
-        $data["employers"] = $this->employer_model->get_all_employer();
+        $data["companies"] = $this->employer_model->get_all_employer();
+        $data['status'] = $this->employer_model->get_status();
+
+        // var_dump($data['status'] = $this->employer_model->get_status());
+
         $this->load->view("admin/template/header", $meta);
         $this->load->view("admin/employer/view", $data);
         $this->load->view("admin/template/footer");
     }
 
     public function add_employer() {
-        $this->form_validation->set_rules("employer_name", "Employer Name", "required");
-        $this->form_validation->set_rules("employer_description", "Employer Description", "required");
-        $this->form_validation->set_rules("employer_status", "Employer Status", "required");
-        $this->form_validation->set_rules("agent_id", "Agent ID", "required");
+        $this->form_validation->set_rules("company_name", "Company Name", "required");
+        $this->form_validation->set_rules("company_overview", "Company Overview", "required");
+        $this->form_validation->set_rules("company_status", "Employer Status", "required");
 
 
-        if ($this->form_validation->run()) {
+        if ($this->form_validation->run() != FALSE) {
             $data = array (
-                "employer_name" => $this->input->post("employer_name"),
-                "employer_description" => $this->input->post("employer_description"),
-                "emp_status" => $this->input->post("employer_status"),
-                "agent_id" => $this->input->post("agent_id")
+                "company_name" => $this->input->post("company_name"),
+                "company_overview" => $this->input->post("company_overview"),
+                "company_status" => $this->input->post("company_status")
             );
 
-            if($this->input->post("update_employer")){
-                $id = $this->input->post("employer_id");
+            if($this->input->post("update_company")){
+                $id = $this->input->post("company_id");
                 $this->employer_model->update_employer($data, $id);
 
 				$this->session->set_flashdata('class', 'success');
-				$this->session->set_flashdata('message', 'Employer records has been updated!');
+                $this->session->set_flashdata('message', 'Employer records has been updated!');
                 redirect(base_url() . "employer");
             }else {
                 $this->employer_model->set_employer($data);
 
 				$this->session->set_flashdata('class', 'success');
-				$this->session->set_flashdata('message', 'New employer record has been added!');
+                $this->session->set_flashdata('message', 'New employer record has been added!');
                 redirect(base_url() . "employer");
             }            
+        }else {
+            redirect('employer');
         }
     }
 
@@ -48,7 +52,8 @@ class Employer extends CI_Controller {
         $id = $this->uri->segment(3);
 
         $meta['title'] = 'Update Employer';
-        $data["employer"] = $this->employer_model->get_specific_employer($id);
+        $data["company"] = $this->employer_model->get_specific_employer($id);
+        $data['status'] = $this->employer_model->get_status();
 
         $this->load->view("admin/template/header", $meta);
         $this->load->view("admin/employer/update_employer", $data);
