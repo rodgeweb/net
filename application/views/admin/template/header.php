@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title><?= $title; ?></title>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/bootstrap/bootstrap.min.css">
+	<script src="<?php echo base_url() ?>assets/js/jquery.min.js" ></script>
 	<script src="<?php echo base_url() ?>assets/js/bootstrap/bootstrap.min.js" ></script>
 </head>
 <body>
@@ -22,23 +23,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<li class="nav-item">
 					<a class="nav-link" href="<?= site_url('job');?>">Dashboard</a>
 				</li>
-				<!-- <li class="nav-item">
-					<a class="nav-link" href="<?= site_url('page/index');?>">Job Categories</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="company-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Company
+					</a>
+					<div class="dropdown-menu" aria-labelledby="company-dropdown">
+						<a class="dropdown-item" href="<?= site_url('company/view');?>">List of Companies</a>
+						<a class="dropdown-item" href="<?= site_url('company/add-company');?>">Add Company</a>
+					</div>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="<?= site_url('page/index');?>">Create Category</a>
-				</li> -->
-				<li class="nav-item">
-					<a class="nav-link" href="<?= site_url('employer/view');?>">Employer</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="<?= site_url('job');?>">Jobs</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="<?= site_url('job/add-job');?>">Create Job</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="<?= site_url('job_position/view');?>">Job Position</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="company-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Job
+					</a>
+					<div class="dropdown-menu" aria-labelledby="company-dropdown">
+						<a class="dropdown-item" href="<?= site_url('job');?>">Job Post</a>
+						<a class="dropdown-item" href="<?= site_url('job/add-job');?>">Add Job</a>
+						<a class="dropdown-item" href="<?= site_url('job_position/view');?>">List of Job Positions</a>
+						<a class="dropdown-item" href="<?= site_url('job_position/add-job-positions');?>">Add Job Position</a>
+					</div>
 				</li>
 			</ul>
 			<?php endif; ?>

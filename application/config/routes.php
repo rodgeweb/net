@@ -57,9 +57,9 @@ $route['job/update-job/(:any)'] = 'job/update_job/$';
 $route['job/delete/(:any)'] = 'job/update_job_status/$';
 $route['job/view-job/(:any)'] = 'job/view_job/$';
 
-// Employer
-$route['employer'] = 'employer/view';
-$route['employer/add-employer'] = 'employer/add_employer';
+// Company
+$route['company'] = 'company/view';
+$route['company/add-company'] = 'company/add_company';
 
 // User
 $route['users/update-profile'] = 'users/update_profile';

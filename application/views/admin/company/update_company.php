@@ -7,7 +7,7 @@
         <?= validation_errors(); ?>
         </div>
         <?php endif; ?>
-        <?= form_open_multipart('employer/add_employer') ?>
+        <?= form_open_multipart('company/add_company') ?>
             <input type="hidden" name="company_id"  value="<?php echo $company->id; ?>" />
             <div class="form-group">
                 <label>Company Name</label>
