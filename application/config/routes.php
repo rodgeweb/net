@@ -60,6 +60,9 @@ $route['job/view-job/(:any)'] = 'job/view_job/$';
 // Company
 $route['company'] = 'company/view';
 $route['company/add-company'] = 'company/add_company';
+$route['company/update-company/(:any)'] = 'company/update_company/$';
+$route['company/disable-company/(:any)'] = 'company/update_company_status/$';
+$route['company/view/(:any)'] = 'company/view_specific_company/$';
 
 // User
 $route['users/update-profile'] = 'users/update_profile';

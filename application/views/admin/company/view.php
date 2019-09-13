@@ -18,8 +18,9 @@
                 <td><?php echo $company->company_overview; ?></td>
                 <td><?php echo $company->status_name; ?></td>
                 <td>
-                    <?= anchor('company/update_company/'.$company->id, 'Update', 'class="btn btn-warning"'); ?>
-                    <?= anchor('company/update_company_status/'.$company->id, 'Disable', 'class="btn btn-danger"'); ?>
+                    <?= anchor('company/view/'.$company->company_slug_name, 'View', 'class="btn btn-primary"'); ?>
+                    <?= anchor('company/update-company/'.$company->company_slug_name, 'Update', 'class="btn btn-warning"'); ?>
+                    <?= anchor('company/disable-company/'.$company->company_slug_name, 'Disable', 'class="btn btn-danger"'); ?>
                 </td>
             </tbody>
         </tr>

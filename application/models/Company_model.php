@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Company_model extends CI_Model {
 
     function get_all_company() {
-        $this->db->select('a.id, a.company_name, a.company_overview, a.company_status, b.status_name');
+        $this->db->select('a.id, a.company_name, a.company_slug_name, a.company_overview, a.company_status, b.status_name');
         $this->db->from("tbl_company a");
         $this->db->join('tbl_status b', 'b.id = a.company_status');
         $query = $this->db->get();
@@ -15,10 +15,10 @@ class Company_model extends CI_Model {
         $this->db->insert("tbl_company", $data);
     }
 
-    function get_specific_company($id) {
-        $this->db->select('a.id, a.company_name, a.company_overview, a.company_status, b.status_name');
+    function get_specific_company($slug) {
+        $this->db->select('a.id, a.company_name, a.company_slug_name, a.company_overview, a.company_logo_path, a.company_status, b.status_name');
         $this->db->from('tbl_company a');
-        $this->db->where("a.id", $id);
+        $this->db->where("a.company_slug_name", $slug);
         $this->db->join('tbl_status b', 'b.id = a.company_status');
         $query = $this->db->get();
         return $query->row();
@@ -30,8 +30,8 @@ class Company_model extends CI_Model {
 
     }
 
-    function update_company_status($data, $id) {
-        $this->db->where('id', $id);
+    function update_company_status($data, $slug) {
+        $this->db->where('company_slug_name', $slug);
         $this->db->update('tbl_company', $data);
     }
 

@@ -7,7 +7,7 @@
         <?= validation_errors(); ?>
         </div>
         <?php endif; ?>
-        <?= form_open_multipart('company/add_company') ?>
+        <?= form_open_multipart('company/add-company') ?>
             <input type="hidden" name="company_id"  value="<?php echo $company->id; ?>" />
             <div class="form-group">
                 <label>Company Name</label>
@@ -25,6 +25,12 @@
                     <option value="<?= $status->id ?>"><?= $status->status_name ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="form-group">
+                <div class="pb-3">
+                    <img class="img-thumbnail w-25" src="<?= base_url().$company->company_logo_path; ?>" alt="<?= $company->company_name; ?>">
+                </div>
+                <input class="btn" type="file" name="company_logo" size="20"  />
             </div>
             <div class="form-group">
                 <input class="btn btn-primary" type="submit" name="update_company" value="Update company" />
